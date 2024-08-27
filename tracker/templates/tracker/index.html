@@ -1,0 +1,84 @@
+<!-- IncomeExpenseTracker/tracker/templates/tracker/index.html -->
+{% extends 'tracker/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dropdown ms-auto">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="customerProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ customer_profile.full_name }}
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="customerProfileDropdown">
+        <li><strong>Full Name:</strong> {{ customer_profile.full_name }}</li>
+        <li><strong>Email:</strong> {{ customer_profile.email }}</li>
+        <li><strong>Phone:</strong> {{ customer_profile.phone }}</li>
+        <li><strong>Address:</strong> {{ customer_profile.address }}</li>
+        <li><strong>Account Balance:</strong> {{ customer_profile.balance }}</li>
+        <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>Welcome to the Income Expense Tracker!</h2>
+        <p>Manage your finances efficiently and stay on top of your income and expenses.</p>
+    </div>
+    
+    <!-- Existing content such as transaction summaries -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Income</h5>
+                    <p class="card-text text-success h2">${{ total_income }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Expense</h5>
+                    <p class="card-text text-danger h2">${{ total_expense }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Balance</h5>
+                    <p class="card-text text-primary h2">${{ balance }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mb-4">Transactions</h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.type }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td class="{% if transaction.type == 'income' %}text-success{% else %}text-danger{% endif %}">
+                            ${{ transaction.amount }}
+                        </td>
+                        <td>{{ transaction.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
